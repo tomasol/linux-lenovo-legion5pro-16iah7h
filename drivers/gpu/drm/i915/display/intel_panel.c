@@ -212,11 +212,15 @@ static void intel_panel_add_edid_preferred_mode(struct intel_connector *connecto
 	if (list_empty(&connector->base.probed_modes))
 		return;
 
+	// hotfix for 165Hz: https://github.com/esrsound/ASUS-M16-Laptop
 	/* make sure the preferred mode is first */
 	list_for_each_entry(scan, &connector->base.probed_modes, head) {
-		if (scan->type & DRM_MODE_TYPE_PREFERRED) {
+		// if (scan->type & DRM_MODE_TYPE_PREFERRED) {
+		// 	fixed_mode = scan;
+		// 	break;
+		// }
+		if (!fixed_mode || scan->clock > fixed_mode->clock) {
 			fixed_mode = scan;
-			break;
 		}
 	}
 
